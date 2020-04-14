@@ -1,5 +1,5 @@
 ---
-title: "covid19monitoring_mobility_BD"
+title: "covid19monitoring_mobility_VerkehrsmessstellenKantonZH"
 output: html_document
 ---
 
@@ -88,7 +88,7 @@ R1_tageswert_messstelle <- richtung1 %>%
             'source' := "Kanton Zürich, Baudirektion, Tiefbauamt",
             'update' := "t\u00e4glich",
             'public' := "ja",
-            'description' := "https://github.com/statistikZH/covid19_mobility_ZaehlstellenMIVVeloKantonZH") %>%
+            'description' := "https://github.com/statistikZH/covid19monitoring_mobility_VerkehrsmessstellenKantonZH") %>%
   drop_na()
 
 
@@ -142,7 +142,7 @@ R2_tageswert_messstelle <- richtung2 %>%
             'source' := "Kanton Zürich, Baudirektion, Tiefbauamt",
             'update' := "t\u00e4glich",
             'public' := "ja",
-            'description' := "https://github.com/statistikZH/covid19_mobility_ZaehlstellenMIVVeloKantonZH") %>%
+            'description' := "https://github.com/statistikZH/covid19monitoring_mobility_VerkehrsmessstellenKantonZH") %>%
   drop_na()
 
 
@@ -197,7 +197,7 @@ R3_tageswert_messstelle <- richtung3 %>%
             'source' := "Kanton Zürich, Baudirektion, Tiefbauamt",
             'update' := "t\u00e4glich",
             'public' := "ja",
-            'description' := "https://github.com/statistikZH/covid19_mobility_ZaehlstellenMIVVeloKantonZH") %>%
+            'description' := "https://github.com/statistikZH/covid19monitoring_mobility_VerkehrsmessstellenKantonZH") %>%
   drop_na()
 
 
@@ -252,7 +252,7 @@ R4_tageswert_messstelle <- richtung4 %>%
             'source' := "Kanton Zürich, Baudirektion, Tiefbauamt",
             'update' := "t\u00e4glich",
             'public' := "ja",
-            'description' := "https://github.com/statistikZH/covid19_mobility_ZaehlstellenMIVVeloKantonZH") %>%
+            'description' := "https://github.com/statistikZH/covid19monitoring_mobility_VerkehrsmessstellenKantonZH") %>%
   drop_na()
 
 
@@ -278,12 +278,12 @@ tageswerte_messstelle <- R1_tageswert_messstelle %>%
             'source' := "Kanton Zürich, Baudirektion, Tiefbauamt",
             'update' := "t\u00e4glich",
             'public' := "ja",
-            'description' := "https://github.com/statistikZH/covid19_mobility_ZaehlstellenMIVVeloKantonZH") %>%
+            'description' := "https://github.com/statistikZH/covid19monitoring_mobility_VerkehrsmessstellenKantonZH") %>%
   drop_na()
 
 tageswerte_messstelle
 
-write.table(tageswerte_messstelle, "./Mobility_BD_3687.csv", sep=",", fileEncoding="UTF-8", row.names = F)
+write.table(tageswerte_messstelle, "./Mobility_VerkehrsmessstellenKantonZH_3687.csv", sep=",", fileEncoding="UTF-8", row.names = F)
 
 ```
 
@@ -366,7 +366,7 @@ R1_tageswert_messstelle_velo <- richtung1_velo %>%
             'source' := "Kanton Zürich, Baudirektion, Tiefbauamt",
             'update' := "t\u00e4glich",
             'public' := "ja",
-            'description' := "https://github.com/statistikZH/covid19_mobility_ZaehlstellenMIVVeloKantonZH") %>%
+            'description' := "https://github.com/statistikZH/covid19monitoring_mobility_VerkehrsmessstellenKantonZH") %>%
   drop_na()
 
 
@@ -413,7 +413,7 @@ R2_tageswert_messstelle_velo <- richtung2_velo %>%
             'source' := "Kanton Zürich, Baudirektion, Tiefbauamt",
             'update' := "t\u00e4glich",
             'public' := "ja",
-            'description' := "https://github.com/statistikZH/covid19_mobility_ZaehlstellenMIVVeloKantonZH") %>%
+            'description' := "https://github.com/statistikZH/covid19monitoring_mobility_VerkehrsmessstellenKantonZH") %>%
   drop_na()
 
 
@@ -438,12 +438,12 @@ tageswerte_messstelle_velo <- R1_tageswert_messstelle_velo %>%
             'source' := "Kanton Zürich, Baudirektion, Tiefbauamt",
             'update' := "t\u00e4glich",
             'public' := "ja",
-            'description' := "https://github.com/statistikZH/covid19_mobility_ZaehlstellenMIVVeloKantonZH") %>%
+            'description' := "https://github.com/statistikZH/covid19monitoring_mobility_VerkehrsmessstellenKantonZH") %>%
   drop_na()
 
 tageswerte_messstelle_velo
 
-write.table(tageswerte_messstelle_velo, "./Mobility_BD_1018.csv", sep=",", fileEncoding="UTF-8", row.names = F)
+write.table(tageswerte_messstelle_velo, "./Mobility_VerkehrsmessstellenKantonZH_1018.csv", sep=",", fileEncoding="UTF-8", row.names = F)
 
 ```
 
@@ -469,48 +469,49 @@ ggplot(tageswerte_messstelle_velo, aes(x = date, y = value)) +
 
 ```{r}
 
-miv1 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD/Mobility_BD_109.csv")
+miv1 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_109.csv")
   
-miv2 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD/Mobility_BD_1109.csv")
+miv2 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_1109.csv")
   
-miv3 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD/Mobility_BD_1288.csv")
+miv3 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_1288.csv")
   
-miv4 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD/Mobility_BD_1887.csv")
+miv4 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_1887.csv")
   
-miv5 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD/Mobility_BD_208.csv")
+miv5 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_208.csv")
   
-miv6 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD/Mobility_BD_2287.csv")
+miv6 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_2287.csv")
   
-miv7 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD/Mobility_BD_3690.csv")
+miv7 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_3690.csv")
   
-miv8 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD/Mobility_BD_4790.csv")
+miv8 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_4790.csv")
   
-miv9 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD/Mobility_BD_5191.csv")
+miv9 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_5191.csv")
   
-miv10 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD/Mobility_BD_587.csv")
+miv10 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_587.csv")
   
-miv11 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD/Mobility_BD_609.csv")
+miv11 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_609.csv")
 
-miv12 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD/Mobility_BD_110.csv")
+miv12 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_110.csv")
 
-miv13 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD/Mobility_BD_5186.csv")
+miv13 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_5186.csv")
 
-miv14 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD/Mobility_BD_2085.csv")
+miv14 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_2085.csv")
   
-miv15 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD/Mobility_BD_3687.csv")
+miv15 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_3687.csv")
 
-velo1 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD/Mobility_BD_1018.csv")
+velo1 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_1018.csv")
   
-velo2 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD/Mobility_BD_2019.csv")
+velo2 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_2019.csv")
   
-velo3 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD/Mobility_BD_316.csv")
+velo3 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_316.csv")
   
-velo4 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD/Mobility_BD_716.csv")
+velo4 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_716.csv")
 
 
 mobility_bd <- bind_rows(miv1, miv2, miv3, miv4, miv5, miv6, miv7, miv8, miv9, miv10, miv11, miv12, miv13, miv14, miv15, velo1, velo2, velo3, velo4)
 
 
-write.table(mobility_bd, "./Mobility_BD.csv", sep=",", fileEncoding="UTF-8", row.names = F)
+write.table(mobility_bd, "./Mobility_VerkehrsmessstellenKantonZH.csv", sep=",", fileEncoding="UTF-8", row.names = F)
 
 ```
+

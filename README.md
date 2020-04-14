@@ -1,10 +1,10 @@
-# covid19monitoring_mobility_BD
+# covid19monitoring_mobility_VerkehrsmessstellenKantonZH
 
 ## Grundlage
 Tageswerte zum Verkehrsaufkommen an ausgewählten Verkehrsmessstellen im Kanton Zürich (ausgenommen Stadt Zürich und Winterthur). Erhoben und bereitgestellt werden die Daten von Kanton Zürich, Baudirektion, Tiefbauamt.
 
 ## Methodisches
-Das Datenfile `Mobility_BD.csv` wird in der Regel täglich aktualisiert.
+Das Datenfile `Mobility_VerkehrsmessstellenKantonZH.csv` wird in der Regel täglich aktualisiert.
 
 Messstellen MIV (`variable_long`):
 - Kilchberg (ZH0109), Seestrasse
@@ -42,5 +42,5 @@ Erfasst werden fünf MIV-Fahrzeugkategorien (gemäss SWISS10) sowie Velo (`varia
 
 Die Tageswerte je Fahrzeugkategorie (MIV) sind kumuliert für beide Fahrtrichtungen.
 
-Hinweise zu technischen Unterbrüchen, Feiertagen und weiteren Behinderungen finden sich im File `Mobility_BD_Datenvollständigkeit.xlsx`.
+Hinweise zu technischen Unterbrüchen, Feiertagen und weiteren Behinderungen finden sich im File `Mobility_VerkehrsmessstellenKantonZH_Datenvollständigkeit.xlsx`.
 
