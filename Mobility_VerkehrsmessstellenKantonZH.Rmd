@@ -18,22 +18,6 @@ library(ggplot2)
 
 # Import Data
 
-```{r}
-
-# MIV
-
-setwd("C:/gitrepos/covid19monitoring_mobility_BD/covid19monitoring_mobility_BD_data/01-Rohdaten_01012020bis13042020_MIV/")
-
-wd <- "C:/gitrepos/covid19monitoring_mobility_BD/covid19monitoring_mobility_BD_data/01-Rohdaten_01012020bis13042020_MIV/"
-list_files <- list.files(pattern = "*.xlsx") 
-path <- paste0(wd, list_files)
-
-print(path)
-
-
-```
-
-
 ```{r data import}
 
 # read_excel_allsheets and import into data frame
@@ -47,8 +31,8 @@ sheets <- path %>%
 richtung1 <-sheets[[1]]
 richtung2 <- sheets[[2]]
 # bemerkungen <- sheets[[4]]
-richtung3 <- sheets[[3]] # nur für ZH0110 und ZH5186
-richtung4 <- sheets[[4]] # nur für ZH0110 und ZH5186
+# richtung3 <- sheets[[3]] # nur für ZH0110 und ZH5186
+# richtung4 <- sheets[[4]] # nur für ZH0110 und ZH5186
 
 ```
 
@@ -271,8 +255,8 @@ R4_tageswert_messstelle <- richtung4 %>%
 ```{r joined dataset}
 
 tageswerte_messstelle <- R1_tageswert_messstelle %>% 
-  # bind_rows(R2_tageswert_messstelle) %>%
-  bind_rows(R2_tageswert_messstelle, R3_tageswert_messstelle, R4_tageswert_messstelle) %>% #bei Autobahnen
+  bind_rows(R2_tageswert_messstelle) %>%
+  # bind_rows(R2_tageswert_messstelle, R3_tageswert_messstelle, R4_tageswert_messstelle) %>% #bei Autobahnen
   group_by(date, variable_short) %>%
   summarise(value = sum(value)) %>%
   ungroup() %>%
@@ -320,7 +304,7 @@ ggplot(tageswerte_messstelle, aes(x = date, y = value, color = variable_short)) 
 ```{r data import velo}
 
 # read_excel_allsheets and import into data frame
-path_velo <- "C:/gitrepos/covid19monitoring_mobility_BD/covid19monitoring_mobility_BD_data/02-Rohdaten_01012020bis13042020_Velo/B290pgj - @716@ - Rohdaten - Regensdorf (ZH0716), Radweg, (716_Regensdorf).xlsx"
+path_velo <- "C:/gitrepos/covid19monitoring_mobility_BD/covid19monitoring_mobility_BD_data/02-Rohdaten_01012020bis13042020_Velo/B290pgj - @1018@ - Rohdaten - Dietikon (ZH1018), Radweg (1018_Dietikon).xlsx"
 
 sheets_velo <- path_velo %>% 
   excel_sheets() %>% 
@@ -417,7 +401,7 @@ R2_tageswert_messstelle_velo <- richtung2_velo %>%
             'variable_short' = "Velo",
             'variable_long' := paste("Aufkommen an Velo-Messstelle", subset_zusatzinfo_velo$Messstelle), 
             'location' := "ZH",      
-            'unit' := "Anzahl",    
+            'unit' := "Anzahl Fahrzeuge",    
             'source' := "Kanton Zürich, Baudirektion, Tiefbauamt",
             'update' := "t\u00e4glich",
             'public' := "ja",
@@ -442,7 +426,7 @@ tageswerte_messstelle_velo <- R1_tageswert_messstelle_velo %>%
             'variable_short' = .data$variable_short,
             'variable_long' := paste("Aufkommen an Velo-Messstelle", subset_zusatzinfo_velo$Messstelle), 
             'location' := "ZH",      
-            'unit' := "Anzahl",    
+            'unit' := "Anzahl Fahrzeuge",    
             'source' := "Kanton Zürich, Baudirektion, Tiefbauamt",
             'update' := "t\u00e4glich",
             'public' := "ja",

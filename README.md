@@ -41,5 +41,5 @@ Erfasst werden fünf MIV-Fahrzeugkategorien (gemäss SWISS10) sowie Velo (`varia
 
 Die Tageswerte je Fahrzeugkategorie (MIV) sind kumuliert für alle Fahrtrichtungen.
 
-Hinweise zu technischen Unterbrüchen, Feiertagen und weiteren Behinderungen finden sich im File `Mobility_VerkehrsmessstellenKantonZH_Datenvollständigkeit.xlsx`.
+Hinweise zu technischen Unterbrüchen, Feier- und Ferientagen sowie weiteren Behinderungen finden sich im File `Mobility_VerkehrsmessstellenKantonZH_Datenvollständigkeit.xlsx`.
 
