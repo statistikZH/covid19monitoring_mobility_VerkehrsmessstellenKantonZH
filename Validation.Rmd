@@ -1,0 +1,116 @@
+---
+title: "Validation"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    theme: lumen
+    highlight: tango
+---
+
+<style type="text/css">
+.main-container {
+  max-width: 1800px;
+  margin-left: 0;
+  margin-right: auto;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 14px;
+    border-left: 5px solid #eee;
+}
+
+h1.title {
+  font-size: 38px;
+  color: #000000;
+  }
+  
+h1 { /* Header 1 */
+  font-size: 28px;
+  color: #0033cc;
+}
+h2 { /* Header 2 */
+    font-size: 28px;
+	color: #0099ff
+}
+h3 { /* Header 3 */
+    font-size: 14px;
+	color: #6600cc
+}
+</style>
+
+
+```{r setup, echo=FALSE, results='hide', message=FALSE, warning=FALSE, width = 14}
+
+# import function
+source("./function.R")
+
+# import libraries
+library(dplyr)
+library(readr)
+library(kableExtra)
+library(DT)
+library(lubridate)
+library(ggplot2)
+
+# import data
+dat <-read.csv("./Mobility_VerkehrsmessstellenKantonZH.csv", header=T, sep=",", stringsAsFactors=FALSE, encoding="UTF-8")
+
+metadata <- read.csv("./ValidationMetadata.csv", header=T, sep=",", stringsAsFactors=FALSE, encoding="UTF-8")
+
+# prepare data
+dat_split <- dat %>% 
+  group_split(variable_short) #%>%
+   #group_map(s(X))
+
+
+```
+
+# Unique Values
+
+```{r, collapse=TRUE, warning=FALSE,message=FALSE, echo = FALSE}
+
+  lapply(dat_split, FUN = function(X) CheckIfDfFollowsStandard2(X))
+
+```
+
+
+# Plots
+fig.height = 8
+
+```{r, collapse=TRUE, warning=FALSE,  message=FALSE, echo = FALSE, , out.width='\\textwidth',  fig.width = 20, fig.height= 5}
+
+
+theme_set(theme_gray(base_size = 18))
+
+# create looping variable
+
+sel <- unique(dat$variable_long)
+
+for (i in 1:length(sel)) { 
+
+dat_plot <-  dat %>%
+  filter(variable_long == sel[i]) %>%
+  mutate(date = as_date(date))
+
+p <- ggplot(dat_plot, aes(x=date, y=value, color = variable_short)) + geom_point(alpha = 0.7) +
+  geom_path(alpha = 0.7) +
+  scale_x_date(date_labels = "%a\n%d. %m", date_breaks = "1 week") +
+  labs(title =  paste(unique(dat_plot$variable_long), "|", unique(min(dat_plot$date)), "-", unique(max(dat_plot$date))),
+       caption = paste("Quelle:", unique(dat_plot$source)),
+       x = NULL,
+       y = "GWh") +
+  #theme_stat() +
+  theme(panel.grid.major.x = element_line(linetype = "solid", size = 0.25, color = "grey"))
+
+# print plots to screen
+print(p)
+
+}
+
+```
+

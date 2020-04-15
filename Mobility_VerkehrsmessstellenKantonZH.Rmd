@@ -16,27 +16,42 @@ library(ggplot2)
 
 ```
 
-# Import Data
+# Data prep
 
-```{r data import}
+```{r}
 
-# read_excel_allsheets and import into data frame
-path <- "C:/gitrepos/covid19monitoring_mobility_BD/covid19monitoring_mobility_BD_data/01-Rohdaten_01012020bis13042020_MIV/B290pgj - @110@ - Rohdaten - Winkel (ZH0110), Autobahn (A51).xlsx"
+source("./function.R")
 
-sheets <- path %>% 
-  excel_sheets() %>% 
-  set_names() %>%
-  map(read_excel, path = path)
+#mes 1
+mes1 <-  "C:/gitrepos/covid19monitoring_mobility_BD/covid19monitoring_mobility_BD_data/01-Rohdaten_01012020bis13042020_MIV/B290pgj - @110@ - Rohdaten - Winkel (ZH0110), Autobahn (A51).xlsx"
+mes1_richtung1 <- function_richtung(mes1, 1)
+mes1_richtung2 <- function_richtung(mes1, 2)
+mes1_df <- function_rbind(mes1_richtung1, mes1_richtung2, subset_zusatzinfo$Messstelle)
 
-richtung1 <-sheets[[1]]
-richtung2 <- sheets[[2]]
-# bemerkungen <- sheets[[4]]
-# richtung3 <- sheets[[3]] # nur für ZH0110 und ZH5186
-# richtung4 <- sheets[[4]] # nur für ZH0110 und ZH5186
+#mes 2
+
+# rbind f. alle messstationen
+mes <- rbind(mes1_df)
+
+# korrekt formatieren
+R1_tageswert_messstelle <- mes %>%
+  transmute('date' = mes$date,
+            'value' = mes$value,
+            'topic' := "Mobilität",
+            'variable_short' = mes$variable_short,
+            'variable_long' := paste("Aufkommen MIV nach Fahrzeugkategorie", subset_zusatzinfo$Messstelle), 
+            'location' := "ZH",      
+            'unit' := "Anzahl Fahrzeuge",    
+            'source' := "Kanton Zürich, Baudirektion, Tiefbauamt",
+            'update' := "t\u00e4glich",
+            'public' := "ja",
+            'description' := "https://github.com/statistikZH/covid19monitoring_mobility_VerkehrsmessstellenKantonZH") %>%
+  drop_na()
+
+
 
 ```
 
-# Data prep
 
 ## Creating data frame with daily data per location
 
@@ -62,17 +77,28 @@ richtung1<- richtung1 %>%
          'date' = as.POSIXct(paste(.data$Datum, "%d.%m.%Y"), format="%d.%m.%Y"))
 
 # transform data frame
-richtung1 <- richtung1 %>% 
+richtung1a <- richtung1 %>% 
   pivot_longer(-c(Datum, Zeit, Messstelle, Richtung, date), names_to = "variable_short", values_to = "value") %>%
   mutate(value = as.numeric(value),
          variable_short = case_when(
-           variable_short == "PW" | variable_short == "PW+" ~ "Privatverkehr", 
-           variable_short == "Lief" | variable_short == "Lief+"  | variable_short == "Lief+Aufl." | variable_short == "LW" | variable_short == "LW+" | variable_short == "Sattelzug" | variable_short == "Bus" ~ "Geschäftsverkehr",
-           variable_short == "MR" ~ "Motorrad")) %>%
+            variable_short == "PW" |
+             variable_short == "PW+" ~ "Privatverkehr",
+            variable_short == "Lief" |
+             variable_short == "Lief+" |
+             variable_short == "Lief+Aufl." |
+             variable_short == "LW" |
+             variable_short == "LW+" |
+             variable_short == "Sattelzug" |
+             variable_short == "Bus" ~ "Geschäftsverkehr",
+           variable_short == "MR" ~ "Motorrad",
+           variable_short == "Total" ~ "Total")) %>%
   group_by(variable_short, date) %>%
   summarise(value = round(sum(value))) %>%
   ungroup() %>%
-  mutate(variable_short = ifelse(is.na(variable_short), "Total", variable_short))
+  View()
+
+
+  # mutate(variable_short = ifelse(is.na(variable_short), "Total", variable_short))
 
 # data structure according to monitoring requirements
 R1_tageswert_messstelle <- richtung1 %>%
@@ -118,13 +144,20 @@ richtung2 <- richtung2 %>%
   pivot_longer(-c(Datum, Zeit, Messstelle, Richtung, date), names_to = "variable_short", values_to = "value") %>%
   mutate(value = as.numeric(value),
          variable_short = case_when(
-           variable_short == "PW" | variable_short == "PW+" ~ "Privatverkehr", 
-           variable_short == "Lief" | variable_short == "Lief+"  | variable_short == "Lief+Aufl." | variable_short == "LW" | variable_short == "LW+" | variable_short == "Sattelzug" | variable_short == "Bus" ~ "Geschäftsverkehr",
-           variable_short == "MR" ~ "Motorrad")) %>%
+           variable_short == "PW" | 
+             variable_short == "PW+" ~ "Privatverkehr",
+           variable_short == "Lief" | 
+             variable_short == "Lief+"  | 
+             variable_short == "Lief+Aufl." | 
+             variable_short == "LW" | 
+             variable_short == "LW+" | 
+             variable_short == "Sattelzug" | 
+             variable_short == "Bus" ~ "Geschäftsverkehr",
+           variable_short == "MR" ~ "Motorrad",
+           variable_short == "Total" ~ "Total")) %>%
   group_by(variable_short, date) %>%
   summarise(value = round(sum(value))) %>%
-  ungroup() %>%
-  mutate(variable_short = ifelse(is.na(variable_short), "Total", variable_short))
+  ungroup()
 
 # data structure according to monitoring requirements
 R2_tageswert_messstelle <- richtung2 %>%
