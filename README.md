@@ -1,7 +1,7 @@
 # covid19monitoring_mobility_VerkehrsmessstellenKantonZH
 
 ## Grundlage
-Tageswerte zum Verkehrsaufkommen an ausgewählten Verkehrsmessstellen im Kanton Zürich (ausgenommen Stadt Zürich und Winterthur). Erhoben und bereitgestellt werden die Daten von Kanton Zürich, Baudirektion, Tiefbauamt.
+Tageswerte zum Verkehrsaufkommen (Anzahl Fahrzeuge) an ausgewählten Verkehrsmessstellen im Kanton Zürich (ausgenommen Stadt Zürich und Winterthur). Erhoben und bereitgestellt werden die Daten von Kanton Zürich, Baudirektion, Tiefbauamt.
 
 ## Methodisches
 Das Datenfile `Mobility_VerkehrsmessstellenKantonZH.csv` wird in der Regel täglich aktualisiert.
@@ -33,14 +33,13 @@ Die Geokoordinaten der Verkehrsmessstellen stehen auf dem [GIS-Browser](https://
 
 ## Weitere Hinweise zur Variable
 Erfasst werden fünf MIV-Fahrzeugkategorien (gemäss SWISS10) sowie Velo (`variable_short`):
-- Personenwagen (PW, PW mit Anhänger)
+- Privatverkehr (PW, PW mit Anhänger)
+- Geschäftsverkehr (Lieferwagen, Lieferwagen mit Anhänger und Lieferwagen mit Aufleger, Bus/Car, Lastwagen, Lastenzug und Sattelzug)
 - Motorrad
-- Lieferwagen (Lieferwagen, Lieferwagen mit Anhänger und Lieferwagen mit Aufleger)
-- Bus/Car
-- Lastwagen/Sattelzug (Lastwagen, Lastenzug und Sattelzug)
 - Velo
+- Total (Summe Fahrzeuge pro Tag und MIV-Fahrzeugkategorie, exkl. Velo)
 
-Die Tageswerte je Fahrzeugkategorie (MIV) sind kumuliert für beide Fahrtrichtungen.
+Die Tageswerte je Fahrzeugkategorie (MIV) sind kumuliert für alle Fahrtrichtungen.
 
 Hinweise zu technischen Unterbrüchen, Feiertagen und weiteren Behinderungen finden sich im File `Mobility_VerkehrsmessstellenKantonZH_Datenvollständigkeit.xlsx`.
 

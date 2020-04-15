@@ -18,10 +18,26 @@ library(ggplot2)
 
 # Import Data
 
+```{r}
+
+# MIV
+
+setwd("C:/gitrepos/covid19monitoring_mobility_BD/covid19monitoring_mobility_BD_data/01-Rohdaten_01012020bis13042020_MIV/")
+
+wd <- "C:/gitrepos/covid19monitoring_mobility_BD/covid19monitoring_mobility_BD_data/01-Rohdaten_01012020bis13042020_MIV/"
+list_files <- list.files(pattern = "*.xlsx") 
+path <- paste0(wd, list_files)
+
+print(path)
+
+
+```
+
+
 ```{r data import}
 
 # read_excel_allsheets and import into data frame
-path <- "./covid19monitoring_mobility_BD_data/01-Rohdaten_01012020bis13042020_MIV/B290pgj - @3687@ - Rohdaten - Birmensdorf (ZH3687), Aargauerstrasse (Route Nr.xlsx"
+path <- "C:/gitrepos/covid19monitoring_mobility_BD/covid19monitoring_mobility_BD_data/01-Rohdaten_01012020bis13042020_MIV/B290pgj - @110@ - Rohdaten - Winkel (ZH0110), Autobahn (A51).xlsx"
 
 sheets <- path %>% 
   excel_sheets() %>% 
@@ -31,8 +47,8 @@ sheets <- path %>%
 richtung1 <-sheets[[1]]
 richtung2 <- sheets[[2]]
 # bemerkungen <- sheets[[4]]
-# richtung3 <- sheets[[3]] # nur für ZH0110 und ZH5186
-# richtung4 <- sheets[[4]] # nur für ZH0110 und ZH5186
+richtung3 <- sheets[[3]] # nur für ZH0110 und ZH5186
+richtung4 <- sheets[[4]] # nur für ZH0110 und ZH5186
 
 ```
 
@@ -63,18 +79,16 @@ richtung1<- richtung1 %>%
 
 # transform data frame
 richtung1 <- richtung1 %>% 
-  pivot_longer(-c(Datum, Zeit, Total, Messstelle, Richtung, date), names_to = "variable_short", values_to = "value") %>%
+  pivot_longer(-c(Datum, Zeit, Messstelle, Richtung, date), names_to = "variable_short", values_to = "value") %>%
   mutate(value = as.numeric(value),
          variable_short = case_when(
-    variable_short == "PW" | variable_short == "PW" ~ "Personenwagen", 
-    variable_short == "Lief" | variable_short == "Lief+"  | variable_short == "Lief+Aufl." ~ "Lieferwagen",
-    variable_short == "LW" | variable_short == "LW+" | variable_short == "Sattelzug" ~ "Lastwagen/Sattelzug",
-    variable_short == "Bus" ~ "Bus/Car",
-    variable_short == "MR" ~ "Motorrad")
-) %>%
+           variable_short == "PW" | variable_short == "PW+" ~ "Privatverkehr", 
+           variable_short == "Lief" | variable_short == "Lief+"  | variable_short == "Lief+Aufl." | variable_short == "LW" | variable_short == "LW+" | variable_short == "Sattelzug" | variable_short == "Bus" ~ "Geschäftsverkehr",
+           variable_short == "MR" ~ "Motorrad")) %>%
   group_by(variable_short, date) %>%
-  summarise(value = floor(sum(value))) %>%
-  ungroup()
+  summarise(value = round(sum(value))) %>%
+  ungroup() %>%
+  mutate(variable_short = ifelse(is.na(variable_short), "Total", variable_short))
 
 # data structure according to monitoring requirements
 R1_tageswert_messstelle <- richtung1 %>%
@@ -82,9 +96,9 @@ R1_tageswert_messstelle <- richtung1 %>%
             'value' = richtung1$value,
             'topic' := "Mobilität",
             'variable_short' = richtung1$variable_short,
-            'variable_long' := "Aufkommen MIV nach Fahrzeugkategorie an Messstelle Birmensdorf (ZH3687)", 
-            'location' := "CH",      
-            'unit' := "Anzahl",    
+            'variable_long' := paste("Aufkommen MIV nach Fahrzeugkategorie", subset_zusatzinfo$Messstelle), 
+            'location' := "ZH",      
+            'unit' := "Anzahl Fahrzeuge",    
             'source' := "Kanton Zürich, Baudirektion, Tiefbauamt",
             'update' := "t\u00e4glich",
             'public' := "ja",
@@ -117,18 +131,16 @@ richtung2<- richtung2 %>%
 
 # transform data frame
 richtung2 <- richtung2 %>% 
-  pivot_longer(-c(Datum, Zeit, Total, Messstelle, Richtung, date), names_to = "variable_short", values_to = "value") %>%
+  pivot_longer(-c(Datum, Zeit, Messstelle, Richtung, date), names_to = "variable_short", values_to = "value") %>%
   mutate(value = as.numeric(value),
          variable_short = case_when(
-    variable_short == "PW" | variable_short == "PW" ~ "Personenwagen", 
-    variable_short == "Lief" | variable_short == "Lief+"  | variable_short == "Lief+Aufl." ~ "Lieferwagen",
-    variable_short == "LW" | variable_short == "LW+" | variable_short == "Sattelzug" ~ "Lastwagen/Sattelzug",
-    variable_short == "Bus" ~ "Bus/Car",
-    variable_short == "MR" ~ "Motorrad")
-) %>%
+           variable_short == "PW" | variable_short == "PW+" ~ "Privatverkehr", 
+           variable_short == "Lief" | variable_short == "Lief+"  | variable_short == "Lief+Aufl." | variable_short == "LW" | variable_short == "LW+" | variable_short == "Sattelzug" | variable_short == "Bus" ~ "Geschäftsverkehr",
+           variable_short == "MR" ~ "Motorrad")) %>%
   group_by(variable_short, date) %>%
-  summarise(value = floor(sum(value))) %>%
-  ungroup()
+  summarise(value = round(sum(value))) %>%
+  ungroup() %>%
+  mutate(variable_short = ifelse(is.na(variable_short), "Total", variable_short))
 
 # data structure according to monitoring requirements
 R2_tageswert_messstelle <- richtung2 %>%
@@ -136,9 +148,9 @@ R2_tageswert_messstelle <- richtung2 %>%
             'value' = richtung2$value,
             'topic' := "Mobilität",
             'variable_short' = richtung2$variable_short,
-            'variable_long' := "Aufkommen MIV nach Fahrzeugkategorie an Messstelle Birmensdorf (ZH3687)", 
-            'location' := "CH",      
-            'unit' := "Anzahl",    
+            'variable_long' := paste("Aufkommen MIV nach Fahrzeugkategorie", subset_zusatzinfo$Messstelle), 
+            'location' := "ZH",      
+            'unit' := "Anzahl Fahrzeuge",    
             'source' := "Kanton Zürich, Baudirektion, Tiefbauamt",
             'update' := "t\u00e4glich",
             'public' := "ja",
@@ -172,18 +184,16 @@ richtung3<- richtung3 %>%
 
 # transform data frame
 richtung3 <- richtung3 %>% 
-  pivot_longer(-c(Datum, Zeit, Total, Messstelle, Richtung, date), names_to = "variable_short", values_to = "value") %>%
+  pivot_longer(-c(Datum, Zeit, Messstelle, Richtung, date), names_to = "variable_short", values_to = "value") %>%
   mutate(value = as.numeric(value),
          variable_short = case_when(
-    variable_short == "PW" | variable_short == "PW" ~ "Personenwagen", 
-    variable_short == "Lief" | variable_short == "Lief+"  | variable_short == "Lief+Aufl." ~ "Lieferwagen",
-    variable_short == "LW" | variable_short == "LW+" | variable_short == "Sattelzug" ~ "Lastwagen/Sattelzug",
-    variable_short == "Bus" ~ "Bus/Car",
-    variable_short == "MR" ~ "Motorrad")
-) %>%
+           variable_short == "PW" | variable_short == "PW+" ~ "Privatverkehr", 
+           variable_short == "Lief" | variable_short == "Lief+"  | variable_short == "Lief+Aufl." | variable_short == "LW" | variable_short == "LW+" | variable_short == "Sattelzug" | variable_short == "Bus" ~ "Geschäftsverkehr",
+           variable_short == "MR" ~ "Motorrad")) %>%
   group_by(variable_short, date) %>%
-  summarise(value = floor(sum(value))) %>%
-  ungroup()
+  summarise(value = round(sum(value))) %>%
+  ungroup() %>%
+  mutate(variable_short = ifelse(is.na(variable_short), "Total", variable_short))
 
 # data structure according to monitoring requirements
 R3_tageswert_messstelle <- richtung3 %>%
@@ -191,9 +201,9 @@ R3_tageswert_messstelle <- richtung3 %>%
             'value' = richtung3$value,
             'topic' := "Mobilität",
             'variable_short' = richtung3$variable_short,
-            'variable_long' := "Aufkommen MIV nach Fahrzeugkategorie an Messstelle Uster (ZH5186), Oberland-Autobahn (A53)", 
-            'location' := "CH",      
-            'unit' := "Anzahl",    
+            'variable_long' := paste("Aufkommen MIV nach Fahrzeugkategorie", subset_zusatzinfo$Messstelle), 
+            'location' := "ZH",      
+            'unit' := "Anzahl Fahrzeuge",    
             'source' := "Kanton Zürich, Baudirektion, Tiefbauamt",
             'update' := "t\u00e4glich",
             'public' := "ja",
@@ -227,18 +237,16 @@ richtung4<- richtung4 %>%
 
 # transform data frame
 richtung4 <- richtung4 %>% 
-  pivot_longer(-c(Datum, Zeit, Total, Messstelle, Richtung, date), names_to = "variable_short", values_to = "value") %>%
+  pivot_longer(-c(Datum, Zeit, Messstelle, Richtung, date), names_to = "variable_short", values_to = "value") %>%
   mutate(value = as.numeric(value),
          variable_short = case_when(
-    variable_short == "PW" | variable_short == "PW" ~ "Personenwagen", 
-    variable_short == "Lief" | variable_short == "Lief+"  | variable_short == "Lief+Aufl." ~ "Lieferwagen",
-    variable_short == "LW" | variable_short == "LW+" | variable_short == "Sattelzug" ~ "Lastwagen/Sattelzug",
-    variable_short == "Bus" ~ "Bus/Car",
-    variable_short == "MR" ~ "Motorrad")
-) %>%
+           variable_short == "PW" | variable_short == "PW+" ~ "Privatverkehr", 
+           variable_short == "Lief" | variable_short == "Lief+"  | variable_short == "Lief+Aufl." | variable_short == "LW" | variable_short == "LW+" | variable_short == "Sattelzug" | variable_short == "Bus" ~ "Geschäftsverkehr",
+           variable_short == "MR" ~ "Motorrad")) %>%
   group_by(variable_short, date) %>%
-  summarise(value = floor(sum(value))) %>%
-  ungroup()
+  summarise(value = round(sum(value))) %>%
+  ungroup() %>%
+  mutate(variable_short = ifelse(is.na(variable_short), "Total", variable_short))
 
 # data structure according to monitoring requirements
 R4_tageswert_messstelle <- richtung4 %>%
@@ -246,9 +254,9 @@ R4_tageswert_messstelle <- richtung4 %>%
             'value' = richtung4$value,
             'topic' := "Mobilität",
             'variable_short' = richtung4$variable_short,
-            'variable_long' := "Aufkommen MIV nach Fahrzeugkategorie an Messstelle Uster (ZH5186), Oberland-Autobahn (A53)", 
-            'location' := "CH",      
-            'unit' := "Anzahl",    
+            'variable_long' := paste("Aufkommen MIV nach Fahrzeugkategorie", subset_zusatzinfo$Messstelle), 
+            'location' := "ZH",      
+            'unit' := "Anzahl Fahrzeuge",    
             'source' := "Kanton Zürich, Baudirektion, Tiefbauamt",
             'update' := "t\u00e4glich",
             'public' := "ja",
@@ -263,8 +271,8 @@ R4_tageswert_messstelle <- richtung4 %>%
 ```{r joined dataset}
 
 tageswerte_messstelle <- R1_tageswert_messstelle %>% 
-  bind_rows(R2_tageswert_messstelle) %>%
-  # bind_rows(R2_tageswert_messstelle, R3_tageswert_messstelle, R4_tageswert_messstelle) %>% #bei Autobahnen
+  # bind_rows(R2_tageswert_messstelle) %>%
+  bind_rows(R2_tageswert_messstelle, R3_tageswert_messstelle, R4_tageswert_messstelle) %>% #bei Autobahnen
   group_by(date, variable_short) %>%
   summarise(value = sum(value)) %>%
   ungroup() %>%
@@ -272,9 +280,9 @@ tageswerte_messstelle <- R1_tageswert_messstelle %>%
             'value' = .data$value,
             'topic' := "Mobilität",
             'variable_short' = .data$variable_short,
-            'variable_long' := "Aufkommen MIV nach Fahrzeugkategorie an Messstelle Birmensdorf (ZH3687)", 
-            'location' := "CH",      
-            'unit' := "Anzahl",    
+            'variable_long' := paste("Aufkommen MIV nach Fahrzeugkategorie", subset_zusatzinfo$Messstelle), 
+            'location' := "ZH",      
+            'unit' := "Anzahl Fahrzeuge",    
             'source' := "Kanton Zürich, Baudirektion, Tiefbauamt",
             'update' := "t\u00e4glich",
             'public' := "ja",
@@ -283,7 +291,7 @@ tageswerte_messstelle <- R1_tageswert_messstelle %>%
 
 tageswerte_messstelle
 
-write.table(tageswerte_messstelle, "./Mobility_VerkehrsmessstellenKantonZH_3687.csv", sep=",", fileEncoding="UTF-8", row.names = F)
+write.table(tageswerte_messstelle, paste0("Mobility_",subset_zusatzinfo$Messstelle,".csv"), sep=",", fileEncoding="UTF-8", row.names = F)
 
 ```
 
@@ -298,7 +306,7 @@ ggplot(tageswerte_messstelle, aes(x = date, y = value, color = variable_short)) 
   stat_peaks(x.label.fmt = "%a. %d.%m.", geom = "text", color = "grey60", span = 31, vjust = -0.5) +
   labs(x = NULL,
        y = "Anzahl Fahrzeuge",
-       title = "Verkersaufkommen, Zürich (ZH0609)",
+       title = paste("Verkersaufkommen", subset_zusatzinfo$Messstelle),
        color = NULL) +
   theme(legend.position = "bottom") +
   theme_stat()
@@ -312,7 +320,7 @@ ggplot(tageswerte_messstelle, aes(x = date, y = value, color = variable_short)) 
 ```{r data import velo}
 
 # read_excel_allsheets and import into data frame
-path_velo <- "./covid19monitoring_mobility_BD_data/02-Rohdaten_01012020bis13042020_Velo/B290pgj - @1018@ - Rohdaten - Dietikon (ZH1018), Radweg (1018_Dietikon).xlsx"
+path_velo <- "C:/gitrepos/covid19monitoring_mobility_BD/covid19monitoring_mobility_BD_data/02-Rohdaten_01012020bis13042020_Velo/B290pgj - @716@ - Rohdaten - Regensdorf (ZH0716), Radweg, (716_Regensdorf).xlsx"
 
 sheets_velo <- path_velo %>% 
   excel_sheets() %>% 
@@ -334,7 +342,7 @@ colnames(richtung1_velo) = richtung1_velo[7, ] # the 8th row will be the header
 richtung1_velo <- richtung1_velo[-7, ] # removing the first row.
 
 # subset additional information and save to a data frame
-subset_zusatzinfo <- richtung1_velo[2:5, 1:2] %>% 
+subset_zusatzinfo_velo <- richtung1_velo[2:5, 1:2] %>% 
   pivot_wider(values_from = Zeit, names_from = Datum) %>% 
   rename(Messstelle = 1, Richtung = 2) %>%
   select(Messstelle, Richtung)
@@ -342,8 +350,8 @@ subset_zusatzinfo <- richtung1_velo[2:5, 1:2] %>%
 # adding direction and station id to data frame
 richtung1_velo <- richtung1_velo[-c(1, 2, 3, 4, 5, 6, 7), c(1,2,3)]
 richtung1_velo <- richtung1_velo %>% 
-  mutate('Messstelle' = subset_zusatzinfo$Messstelle,
-         'Richtung' = subset_zusatzinfo$Richtung,
+  mutate('Messstelle' = subset_zusatzinfo_velo$Messstelle,
+         'Richtung' = subset_zusatzinfo_velo$Richtung,
          'date' = as.POSIXct(paste(.data$Datum, "%d.%m.%Y"), format="%d.%m.%Y"))
 
 # transform data frame
@@ -360,9 +368,9 @@ R1_tageswert_messstelle_velo <- richtung1_velo %>%
             'value' = richtung1_velo$value,
             'topic' := "Mobilität",
             'variable_short' = "Velo",
-            'variable_long' := "Aufkommen an Velo-Messstelle Dietikon (ZH1018)", 
-            'location' := "CH",      
-            'unit' := "Anzahl",    
+            'variable_long' := paste("Aufkommen an Velo-Messstelle", subset_zusatzinfo_velo$Messstelle), 
+            'location' := "ZH",      
+            'unit' := "Anzahl Fahrzeuge",    
             'source' := "Kanton Zürich, Baudirektion, Tiefbauamt",
             'update' := "t\u00e4glich",
             'public' := "ja",
@@ -381,7 +389,7 @@ colnames(richtung2_velo) = richtung2_velo[7, ] # the 8th row will be the header
 richtung2_velo <- richtung2_velo[-7, ] # removing the first row.
 
 # subset additional information and save to a data frame
-subset_zusatzinfo <- richtung2_velo[2:5, 1:2] %>% 
+subset_zusatzinfo_velo <- richtung2_velo[2:5, 1:2] %>% 
   pivot_wider(values_from = Zeit, names_from = Datum) %>% 
   rename(Messstelle = 1, Richtung = 2) %>%
   select(Messstelle, Richtung)
@@ -389,8 +397,8 @@ subset_zusatzinfo <- richtung2_velo[2:5, 1:2] %>%
 # adding direction and station id to data frame
 richtung2_velo <- richtung2_velo[-c(1, 2, 3, 4, 5, 6, 7), c(1,2,3)]
 richtung2_velo <- richtung2_velo %>% 
-  mutate('Messstelle' = subset_zusatzinfo$Messstelle,
-         'Richtung' = subset_zusatzinfo$Richtung,
+  mutate('Messstelle' = subset_zusatzinfo_velo$Messstelle,
+         'Richtung' = subset_zusatzinfo_velo$Richtung,
          'date' = as.POSIXct(paste(.data$Datum, "%d.%m.%Y"), format="%d.%m.%Y"))
 
 # transform data frame
@@ -407,8 +415,8 @@ R2_tageswert_messstelle_velo <- richtung2_velo %>%
             'value' = richtung2_velo$value,
             'topic' := "Mobilität",
             'variable_short' = "Velo",
-            'variable_long' := "Aufkommen an Velo-Messstelle Dietikon (ZH1018)", 
-            'location' := "CH",      
+            'variable_long' := paste("Aufkommen an Velo-Messstelle", subset_zusatzinfo_velo$Messstelle), 
+            'location' := "ZH",      
             'unit' := "Anzahl",    
             'source' := "Kanton Zürich, Baudirektion, Tiefbauamt",
             'update' := "t\u00e4glich",
@@ -432,8 +440,8 @@ tageswerte_messstelle_velo <- R1_tageswert_messstelle_velo %>%
             'value' = .data$value,
             'topic' := "Mobilität",
             'variable_short' = .data$variable_short,
-            'variable_long' := "Aufkommen an Velo-Messstelle Dietikon (ZH1018)", 
-            'location' := "CH",      
+            'variable_long' := paste("Aufkommen an Velo-Messstelle", subset_zusatzinfo_velo$Messstelle), 
+            'location' := "ZH",      
             'unit' := "Anzahl",    
             'source' := "Kanton Zürich, Baudirektion, Tiefbauamt",
             'update' := "t\u00e4glich",
@@ -443,7 +451,7 @@ tageswerte_messstelle_velo <- R1_tageswert_messstelle_velo %>%
 
 tageswerte_messstelle_velo
 
-write.table(tageswerte_messstelle_velo, "./Mobility_VerkehrsmessstellenKantonZH_1018.csv", sep=",", fileEncoding="UTF-8", row.names = F)
+write.table(tageswerte_messstelle_velo, paste0("Mobility_",subset_zusatzinfo_velo$Messstelle,".csv"), sep=",", fileEncoding="UTF-8", row.names = F)
 
 ```
 
@@ -469,43 +477,43 @@ ggplot(tageswerte_messstelle_velo, aes(x = date, y = value)) +
 
 ```{r}
 
-miv1 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_109.csv")
+miv1 <- read_csv("C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH/Mobility_Birmensdorf (ZH3687), Aargauerstrasse (Route Nr. 638).csv")
   
-miv2 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_1109.csv")
+miv2 <- read_csv("C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH/Mobility_Dietikon (ZH1018), Radweg (1018_Dietikon).csv")
   
-miv3 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_1288.csv")
+miv3 <- read_csv("C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH/Mobility_Dübendorf (ZH5191), Zürichstrasse (Route Nr. 740).csv")
   
-miv4 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_1887.csv")
+miv4 <- read_csv("C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH/Mobility_Greifensee (ZH0316), Radweg (316_Greifensee).csv")
   
-miv5 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_208.csv")
+miv5 <- read_csv("C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH/Mobility_Hausen am Albis (ZH2019), Radweg, (2019_Hausen am Albis).csv")
   
-miv6 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_2287.csv")
+miv6 <- read_csv("C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH/Mobility_Horgen (ZH2287), Zugerstrasse (Route Nr. 338).csv")
   
-miv7 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_3690.csv")
+miv7 <- read_csv("C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH/Mobility_Horgen (ZH4790), Zugerstrasse (Route Nr. 341).csv")
   
-miv8 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_4790.csv")
+miv8 <- read_csv("C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH/Mobility_Kilchberg (ZH0109), Seestrasse (Route Nr. 3).csv")
   
-miv9 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_5191.csv")
+miv9 <- read_csv("C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH/Mobility_Knonau (ZH1109), Zürichstrasse (Route Nr. 382).csv")
   
-miv10 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_587.csv")
+miv10 <- read_csv("C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH/Mobility_Langnau am Albis (ZH1887), Albisstrasse (Route Nr. 383).csv")
   
-miv11 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_609.csv")
+miv11 <- read_csv("C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH/Mobility_Obfelden (ZH0208), Dorfstrasse (Route Nr. 654).csv")
 
-miv12 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_110.csv")
+miv12 <- read_csv("C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH/Mobility_Regensdorf (ZH0716), Radweg, (716_Regensdorf).csv")
 
-miv13 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_5186.csv")
+miv13 <- read_csv("C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH/Mobility_Regensdorf (ZH2085), Wehntalerstrasse (Route Nr. 17).csv")
 
-miv14 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_2085.csv")
+miv14 <- read_csv("C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH/Mobility_Thalwil (ZH3690), Zürcherstrasse (Route Nr. 384).csv")
   
-miv15 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_3687.csv")
+miv15 <- read_csv("C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH/Mobility_Uster (ZH0587), Riedikerstrasse (Route Nr. 339).csv")
 
-velo1 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_1018.csv")
+velo1 <- read_csv("C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH/Mobility_Uster (ZH5186), Oberland-Autobahn (A53).csv")
   
-velo2 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_2019.csv")
+velo2 <- read_csv("C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH/Mobility_Winkel (ZH0110), Autobahn (A51).csv")
   
-velo3 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_316.csv")
+velo3 <- read_csv("C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH/Mobility_Zollikon (ZH1288), Forchstrasse (Route Nr. 347).csv")
   
-velo4 <- read_csv("C:/gitrepos/covid19monitoring_mobility_BD//Mobility_VerkehrsmessstellenKantonZH_716.csv")
+velo4 <- read_csv("C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH/Mobility_Zürich (ZH0609), Birmensdorferstrasse (Route Nr. 382).csv")
 
 
 mobility_bd <- bind_rows(miv1, miv2, miv3, miv4, miv5, miv6, miv7, miv8, miv9, miv10, miv11, miv12, miv13, miv14, miv15, velo1, velo2, velo3, velo4)
