@@ -46,6 +46,9 @@ h3 { /* Header 3 */
 
 ```{r setup, echo=FALSE, results='hide', message=FALSE, warning=FALSE, width = 14}
 
+dir <- "C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH"
+setwd(dir)
+
 # import function
 source("./function.R")
 
@@ -59,8 +62,6 @@ library(ggplot2)
 
 # import data
 dat <-read.csv("./Mobility_VerkehrsmessstellenKantonZH.csv", header=T, sep=",", stringsAsFactors=FALSE, encoding="UTF-8")
-
-metadata <- read.csv("./ValidationMetadata.csv", header=T, sep=",", stringsAsFactors=FALSE, encoding="UTF-8")
 
 # prepare data
 dat_split <- dat %>% 
@@ -103,7 +104,8 @@ p <- ggplot(dat_plot, aes(x=date, y=value, color = variable_short)) + geom_point
   labs(title =  paste(unique(dat_plot$variable_long), "|", unique(min(dat_plot$date)), "-", unique(max(dat_plot$date))),
        caption = paste("Quelle:", unique(dat_plot$source)),
        x = NULL,
-       y = "GWh") +
+       y = "Anzahl Fahrzeuge",
+       color = NULL) +
   #theme_stat() +
   theme(panel.grid.major.x = element_line(linetype = "solid", size = 0.25, color = "grey"))
 
