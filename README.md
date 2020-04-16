@@ -19,8 +19,8 @@ Messstellen MIV (`variable_long`):
 - Uster (ZH0587), Riedikerstrasse
 - Zürich (ZH0609), Birmensdorferstrasse
 - Winkel (ZH0110), Autobahn (A51)
-- Uster (ZH5186), Oberland-Autobahn (A53)
-- Regensdorf (ZH2085), Wehntalerstrasse
+- Uster (ZH5186), Oberland-Autobahn (A53) - 9.4.-14.4.2020 keine Daten
+- Regensdorf (ZH2085), Wehntalerstrasse - 1.1. -12.2.2020 keine Daten
 - Birmensdorf (ZH3687), Aargauerstrasse
 
 Messtellen Velo vermerkt in `variable_long`:
