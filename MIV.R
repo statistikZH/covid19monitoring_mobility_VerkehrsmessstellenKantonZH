@@ -124,7 +124,7 @@ miv_tageswerte <- mes %>%
             'variable_short' = mes$variable_short,
             'variable_long' := mes$variable_long, 
             'location' := "ZH",      
-            'unit' := "Anzahl Fahrzeuge",    
+            'unit' := "Anzahl",    
             'source' := "Kanton Zürich, Baudirektion, Tiefbauamt",
             'update' := "t\u00e4glich",
             'public' := "ja",

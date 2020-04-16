@@ -28,17 +28,17 @@ function_richtung <- function(path, number) {
     mutate(value = as.numeric(value),
            variable_short = case_when(
              variable_short == "PW" |
-               variable_short == "PW+" ~ "Privatverkehr",
+               variable_short == "PW+" ~ "privatverkehr",
              variable_short == "Lief" |
                variable_short == "Lief+" |
                variable_short == "Lief+Aufl." |
                variable_short == "LW" |
                variable_short == "LW+" |
                variable_short == "Sattelzug" |
-               variable_short == "Bus" ~ "Gesch\u00e4ftsverkehr",
-             variable_short == "MR" ~ "Motorrad",
-             variable_short == "Total" ~ "Total"),
-           variable_long = paste("Aufkommen MIV nach Fahrzeugkategorie", subset_zusatzinfo$Messstelle)) %>%
+               variable_short == "Bus" ~ "geschaeftsverkehr",
+             variable_short == "MR" ~ "motorrad",
+             variable_short == "Total" ~ "total"),
+           variable_long = paste0("Aufkommen MIV, ", variable_short, ", ", subset_zusatzinfo$Messstelle)) %>%
     group_by(variable_short, Datum, variable_long) %>%
     summarise(value = round(sum(value))) %>%
     ungroup() 
