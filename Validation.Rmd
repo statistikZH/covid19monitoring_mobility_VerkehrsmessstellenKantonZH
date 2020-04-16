@@ -98,14 +98,13 @@ dat_plot <-  dat %>%
   filter(variable_long == sel[i]) %>%
   mutate(date = as_date(date))
 
-p <- ggplot(dat_plot, aes(x=date, y=value, color = variable_short)) + geom_point(alpha = 0.7) +
+p <- ggplot(dat_plot, aes(x=date, y=value)) + geom_point(alpha = 0.7) +
   geom_path(alpha = 0.7) +
   scale_x_date(date_labels = "%a\n%d. %m", date_breaks = "1 week") +
   labs(title =  paste(unique(dat_plot$variable_long), "|", unique(min(dat_plot$date)), "-", unique(max(dat_plot$date))),
        caption = paste("Quelle:", unique(dat_plot$source)),
        x = NULL,
-       y = "Anzahl Fahrzeuge",
-       color = NULL) +
+       y = "Anzahl Fahrzeuge") +
   #theme_stat() +
   theme(panel.grid.major.x = element_line(linetype = "solid", size = 0.25, color = "grey"))
 

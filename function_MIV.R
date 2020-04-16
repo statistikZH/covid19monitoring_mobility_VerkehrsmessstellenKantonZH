@@ -1,5 +1,10 @@
 function_richtung <- function(path, number) {
   
+  firstup <- function(x) {
+    substr(x, 1, 1) <- toupper(substr(x, 1, 1))
+    x
+  } 
+  
   sheets <- path %>% 
     excel_sheets() %>% 
     set_names() %>%
@@ -38,9 +43,10 @@ function_richtung <- function(path, number) {
                variable_short == "Bus" ~ "geschaeftsverkehr",
              variable_short == "MR" ~ "motorrad",
              variable_short == "Total" ~ "total"),
-           variable_long = paste0("Aufkommen MIV, ", variable_short, ", ", subset_zusatzinfo$Messstelle)) %>%
+           variable_long = paste0("Aufkommen MIV, ", firstup(variable_short), ", ", subset_zusatzinfo$Messstelle),
+           variable_short = paste0(variable_short, "_", str_extract(subset_zusatzinfo$Messstelle, 'ZH.{0,4}'))) %>%
     group_by(variable_short, Datum, variable_long) %>%
-    summarise(value = round(sum(value))) %>%
+    summarise(value = round(sum(value, na.rm = TRUE))) %>%
     ungroup() 
 
 }

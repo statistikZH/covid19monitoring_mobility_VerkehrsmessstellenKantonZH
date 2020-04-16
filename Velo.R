@@ -7,6 +7,7 @@ library(tidyverse)
 library(readxl)
 library(dplyr)
 library(ggplot2)
+library(stringr)
 
 
 # Number formatting
@@ -52,7 +53,7 @@ velo_tageswerte <- mes %>%
   transmute('date' = as.POSIXct(paste(Datum, "%d.%m.%Y"), format="%d.%m.%Y"),
             'value' = mes$value,
             'topic' := "Mobilität",
-            'variable_short' = "velo",
+            'variable_short' = mes$variable_short,
             'variable_long' := mes$variable_long, 
             'location' := "ZH",      
             'unit' := "Anzahl",    

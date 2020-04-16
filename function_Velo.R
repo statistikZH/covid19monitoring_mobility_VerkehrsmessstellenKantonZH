@@ -27,9 +27,10 @@ function_richtung <- function(path, number) {
   richtung <- richtung %>% 
     pivot_longer(-c(Datum, Zeit), names_to = "variable_short", values_to = "value") %>%
     mutate(value = as.numeric(value),
-           variable_long = paste0("Aufkommen Velo, ", subset_zusatzinfo$Messstelle)) %>%
-  group_by(variable_short, Datum, variable_long) %>%
-  summarise(value = round(sum(value))) %>%
+           variable_long = paste0("Aufkommen Velo, ", subset_zusatzinfo$Messstelle),
+           variable_short = paste0("velo", "_", str_extract(subset_zusatzinfo$Messstelle, 'ZH.{0,4}'))) %>%
+  group_by(Datum, variable_long, variable_short) %>%
+  summarise(value = round(sum(value, na.rm = TRUE))) %>%
   ungroup() 
   
 }
