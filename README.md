@@ -13,7 +13,7 @@ Messstellen MIV (`variable_long`):
 - Langnau am Albis (ZH1887), Albisstrasse
 - Obfelden (ZH0208), Dorfstrasse
 - Horgen (ZH2287), Zugerstrasse
-- Thalwil (ZH3690), Zürcherstrasse
+- Thalwil (ZH3690), Zürcherstrasse - grössere Bautätigkeiten - keine Daten ab 15.04.2020
 - Horgen (ZH4790), Zugerstrasse
 - Dübendorf (ZH5191), Zürichstrasse
 - Uster (ZH0587), Riedikerstrasse
