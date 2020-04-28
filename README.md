@@ -43,3 +43,7 @@ Die Tageswerte je Fahrzeugkategorie (MIV) sind kumuliert für alle Fahrtrichtung
 
 Hinweise zu technischen Unterbrüchen, Feier- und Ferientagen sowie weiteren Behinderungen finden sich im File `Mobility_VerkehrsmessstellenKantonZH_Datenvollständigkeit.xlsx`.
 
+## Standorte der Verkehrsmessstellen
+![Mobility_VerkehrsmessstellenKantonZH_Map](https://github.com/statistikZH/covid19monitoring_mobility_VerkehrsmessstellenKantonZH/blob/master/Mobility_VerkehrsmessstellenKantonZH_Map.png)
+
+
