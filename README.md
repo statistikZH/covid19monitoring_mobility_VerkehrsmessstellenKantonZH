@@ -16,7 +16,7 @@ Messstellen MIV (`variable_long`):
 - Thalwil (ZH3690), Zürcherstrasse - grössere Bautätigkeiten - keine Daten ab 15.04.2020
 - Horgen (ZH4790), Zugerstrasse
 - Dübendorf (ZH5191), Zürichstrasse
-- Uster (ZH0587), Riedikerstrasse
+- Uster (ZH0587), Riedikerstrasse - Ausfall ab 06.05.2020, davor vereinzelt Unterbrüche
 - Zürich (ZH0609), Birmensdorferstrasse
 - Winkel (ZH0110), Autobahn (A51)
 - Uster (ZH5186), Oberland-Autobahn (A53) - 9.4.-14.4.2020 keine Daten
