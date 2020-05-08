@@ -2,7 +2,7 @@ function_richtung <- function(path, number) {
   
   sheets <- path %>% 
     excel_sheets() %>% 
-    set_names() %>%
+    purrr::set_names() %>%
     map(read_excel, path = path)
   
   richtung <-sheets[[number]]
