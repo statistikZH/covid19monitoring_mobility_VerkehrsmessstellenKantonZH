@@ -21,7 +21,7 @@ options(digits = 6)
 
 ###########################################################################
 
-dir <- "C:/gitrepos/covid19_mobility_ZaehlstellenMIVVeloKantonZH"
+dir <- "C:/gitrepos/covid19monitoring_mobility_VerkehrsmessstellenKantonZH"
 setwd(dir)
 
 ###########################################################################
