@@ -3,7 +3,7 @@ function_richtung <- function(path, number) {
   sheets <- path %>% 
     excel_sheets() %>% 
     purrr::set_names() %>%
-    map(read_excel, path = path)
+    purrr::map(read_excel, path = path)
   
   richtung <-sheets[[number]]
   colnames(richtung) = richtung[7, ] # the 8th row will be the header
@@ -11,7 +11,7 @@ function_richtung <- function(path, number) {
   
   # subset additional information and save to a data frame
   subset_zusatzinfo <- richtung[2:5, 1:2] %>% 
-    pivot_wider(values_from = Zeit, names_from = Datum) %>% 
+    tidyr::pivot_wider(values_from = Zeit, names_from = Datum) %>% 
     rename(Messstelle = 1, Richtung = 2) %>%
     select(Messstelle, Richtung)
   
@@ -25,7 +25,7 @@ function_richtung <- function(path, number) {
   
   # transform data frame
   richtung <- richtung %>% 
-    pivot_longer(-c(Datum, Zeit), names_to = "variable_short", values_to = "value") %>%
+    tidyr::pivot_longer(-c(Datum, Zeit), names_to = "variable_short", values_to = "value") %>%
     mutate(value = as.numeric(value),
            variable_long = paste0("Aufkommen Velo, ", subset_zusatzinfo$Messstelle),
            variable_short = paste0("velo", "_", str_extract(subset_zusatzinfo$Messstelle, 'ZH.{0,4}'))) %>%

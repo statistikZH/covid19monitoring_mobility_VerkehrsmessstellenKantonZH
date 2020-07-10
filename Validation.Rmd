@@ -54,10 +54,10 @@ source("./function.R")
 
 # import libraries
 library(dplyr)
-library(readr)
-library(kableExtra)
-library(DT)
-library(lubridate)
+# library(readr)
+# library(kableExtra)
+# library(DT)
+# library(lubridate)
 library(ggplot2)
 
 # import data
@@ -96,7 +96,7 @@ for (i in 1:length(sel)) {
 
 dat_plot <-  dat %>%
   filter(variable_long == sel[i]) %>%
-  mutate(date = as_date(date))
+  mutate(date = lubridate::as_date(date))
 
 p <- ggplot(dat_plot, aes(x=date, y=value)) + geom_point(alpha = 0.7) +
   geom_path(alpha = 0.7) +

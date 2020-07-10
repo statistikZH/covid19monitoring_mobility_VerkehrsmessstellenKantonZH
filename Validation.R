@@ -9,7 +9,6 @@ source("./function.R")
 ###########################################################################
 
 # Import libraries
-library(tidyverse)
 library(readxl)
 library(dplyr)
 library(ggplot2)
@@ -27,7 +26,7 @@ setwd(dir)
 ###########################################################################
 
 # import master data file from previous day
-master <- read_csv("./Mobility_VerkehrsmessstellenKantonZH.csv") %>%
+master <- readr::read_csv("./Mobility_VerkehrsmessstellenKantonZH.csv") %>%
     mutate('date' = as.POSIXct(paste(date, "%Y-%m-%d"), format="%Y-%m-%d"))
 
 # join miv and velo to master
