@@ -4,7 +4,7 @@
 Tageswerte zum Verkehrsaufkommen (Anzahl Fahrzeuge) an ausgewählten Verkehrsmessstellen im Kanton Zürich (ausgenommen Stadt Zürich und Winterthur). Erhoben und bereitgestellt werden die Daten von Kanton Zürich, Baudirektion, Tiefbauamt.
 
 ## Methodisches
-Das Datenfile `Mobility_VerkehrsmessstellenKantonZH.csv` wird in der Regel täglich aktualisiert.
+Das Datenfile `Mobility_VerkehrsmessstellenKantonZH.csv` wird in der Regel täglich aktualisiert. Update: Ab Juli 2020 erfolgt die Aktualisierung nur noch monatlich.
 
 Messstellen MIV (`variable_long`):
 - Kilchberg (ZH0109), Seestrasse
