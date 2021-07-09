@@ -5,7 +5,7 @@
 
 # import function
 
-source("./function.R")
+source("~/git/covid19monitoring_mobility_VerkehrsmessstellenKantonZH/function.R")
 
 ###########################################################################
 
@@ -21,14 +21,18 @@ options(digits = 6)
 
 ###########################################################################
 
-dir <- "C:/gitrepos/covid19monitoring_mobility_VerkehrsmessstellenKantonZH"
+# dir <- "C:/gitrepos/covid19monitoring_mobility_VerkehrsmessstellenKantonZH"
+dir <- ("~/git/covid19monitoring_mobility_VerkehrsmessstellenKantonZH")
 setwd(dir)
 
 ###########################################################################
 
-# import master data file from previous day
+# import master data file from previous update
+# master <- readr::read_csv("./Mobility_VerkehrsmessstellenKantonZH.csv") %>%
+#     mutate('date' = as.POSIXct(paste(date, "%Y-%m-%d"), format="%Y-%m-%d"))
+
 master <- readr::read_csv("./Mobility_VerkehrsmessstellenKantonZH.csv") %>%
-    mutate('date' = as.POSIXct(paste(date, "%Y-%m-%d"), format="%Y-%m-%d"))
+  mutate('date' = as.POSIXct(paste(date, "%Y-%m-%d"), format="%Y-%m-%d"))
 
 # join miv and velo to master
 mobility_messstellen <- rbind(master, miv_tageswerte, velo_tageswerte) %>% filter(value != 0) %>% arrange(date)
@@ -38,9 +42,9 @@ write.table(mobility_messstellen, "./Mobility_VerkehrsmessstellenKantonZH.csv", 
 
 ###########################################################################
 
-# check 
+# check
 
-CheckIfDfFollowsStandard1(mobility_messstellen)
-render("./Validation.Rmd")
+# CheckIfDfFollowsStandard1(mobility_messstellen)
+# render("./Validation.Rmd")
 
 
