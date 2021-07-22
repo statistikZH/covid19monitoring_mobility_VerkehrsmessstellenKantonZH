@@ -46,7 +46,8 @@ h3 { /* Header 3 */
 
 ```{r setup, echo=FALSE, results='hide', message=FALSE, warning=FALSE, width = 14}
 
-dir <- "C:/gitrepos/covid19monitoring_mobility_VerkehrsmessstellenKantonZH"
+# dir <- "C:/gitrepos/covid19monitoring_mobility_VerkehrsmessstellenKantonZH"
+dir <- ("~/git/covid19monitoring_mobility_VerkehrsmessstellenKantonZH")
 setwd(dir)
 
 # import function
